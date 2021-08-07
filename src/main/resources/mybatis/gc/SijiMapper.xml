@@ -1,0 +1,852 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.gc.dao.SijiDao">
+
+
+	<select id="get" resultType="com.bootdo.gc.domain.SijiDO">
+		select `id`,`bizdate`,`forwunit`,`carnum`,`steelnum`,`specs`,`packnum`,
+		       `tonnage`,`baseprice`,`coefficient`,`tranrate`,`trancost`,
+		       `arrivstation`,`payer`,`inforfee`,`remark`,`issueoffice`,
+		       `aminvoice`,`custompay`,`taxdatepay` ,order_no,pid,dept_id,updated_name
+		       ,invoice,kouling
+		from gc_siji
+		where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.gc.domain.SijiDO">
+		select `id`,`bizdate`,`forwunit`,`carnum`,`steelnum`,`specs`,`packnum`,
+		       `tonnage`,`baseprice`,`coefficient`,`tranrate`,`trancost`,
+		       `arrivstation`,`payer`,`inforfee`,`remark`,`issueoffice`,
+		       `aminvoice`,`custompay`,`taxdatepay` ,order_no,pid,dept_id,updated_name
+		       ,invoice,kouling
+		from gc_siji
+        <where>  
+
+
+			<if test="startDate != null and startDate != ''"> and bizdate &gt;= #{startDate} </if>
+			<if test="endDate != null and endDate != ''"> and bizdate &lt;= #{endDate} </if>
+
+
+			<if test="inforfee != null and inforfee != ''">
+				<![CDATA[ and inforfee like CONCAT('%',#{inforfee},'%') ]]>
+		     </if>
+
+			<if test="carnum != null and carnum != ''">
+				<![CDATA[ and carnum like CONCAT('%',#{carnum},'%') ]]>
+			</if>
+			<if test="arrivstation != null and arrivstation != ''">
+				<![CDATA[ and arrivstation like CONCAT('%',#{arrivstation},'%') ]]>
+			</if>
+
+			<if test="deptId != null and deptId != ''">
+				and dept_id = #{deptId}
+			</if>
+
+
+		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from gc_siji
+		<where>
+
+
+			<if test="startDate != null and startDate != ''"> and bizdate &gt;= #{startDate} </if>
+			<if test="endDate != null and endDate != ''"> and bizdate &lt;= #{endDate} </if>
+
+
+			<if test="inforfee != null and inforfee != ''">
+				<![CDATA[ and inforfee like CONCAT('%',#{inforfee},'%') ]]>
+			</if>
+			<if test="carnum != null and carnum != ''">
+				<![CDATA[ and carnum like CONCAT('%',#{carnum},'%') ]]>
+			</if>
+			<if test="arrivstation != null and arrivstation != ''">
+				<![CDATA[ and arrivstation like CONCAT('%',#{arrivstation},'%') ]]>
+			</if>
+
+			<if test="deptId != null and deptId != ''">
+				and dept_id = #{deptId}
+			</if>
+
+		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.gc.domain.SijiDO" useGeneratedKeys="true" keyProperty="id">
+		insert into gc_siji
+		(
+			`bizdate`, 
+			`forwunit`, 
+			`carnum`, 
+			`steelnum`, 
+			`specs`, 
+			`packnum`, 
+			`tonnage`, 
+			`baseprice`, 
+			`coefficient`, 
+			`tranrate`, 
+			`trancost`, 
+			`arrivstation`, 
+			`payer`, 
+			`inforfee`, 
+			`remark`, 
+			`issueoffice`, 
+			`aminvoice`, 
+			`custompay`, 
+			`taxdatepay`,
+		 	 order_no,
+		 	 pid,dept_id,updated_name,invoice,kouling
+		)
+		values
+		(
+			#{bizdate}, 
+			#{forwunit}, 
+			#{carnum}, 
+			#{steelnum}, 
+			#{specs}, 
+			#{packnum}, 
+			#{tonnage}, 
+			#{baseprice}, 
+			#{coefficient}, 
+			#{tranrate}, 
+			#{trancost}, 
+			#{arrivstation}, 
+			#{payer}, 
+			#{inforfee}, 
+			#{remark}, 
+			#{issueoffice}, 
+			#{aminvoice}, 
+			#{custompay}, 
+			#{taxdatepay},
+			#{orderNo},
+			#{pid},
+			#{deptId},
+			#{updatedName},
+			#{invoice},
+			#{kouling}
+
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.gc.domain.SijiDO">
+		update gc_siji 
+		<set>
+			<if test="bizdate != null">`bizdate` = #{bizdate}, </if>
+			<if test="forwunit != null">`forwunit` = #{forwunit}, </if>
+			<if test="carnum != null">`carnum` = #{carnum}, </if>
+			<if test="steelnum != null">`steelnum` = #{steelnum}, </if>
+			<if test="specs != null">`specs` = #{specs}, </if>
+			<if test="packnum != null">`packnum` = #{packnum}, </if>
+			<if test="tonnage != null">`tonnage` = #{tonnage}, </if>
+			<if test="baseprice != null">`baseprice` = #{baseprice}, </if>
+			<if test="coefficient != null">`coefficient` = #{coefficient}, </if>
+			<if test="tranrate != null">`tranrate` = #{tranrate}, </if>
+			<if test="trancost != null">`trancost` = #{trancost}, </if>
+			<if test="arrivstation != null">`arrivstation` = #{arrivstation}, </if>
+			<if test="payer != null">`payer` = #{payer}, </if>
+			<if test="inforfee != null">`inforfee` = #{inforfee}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
+			<if test="issueoffice != null">`issueoffice` = #{issueoffice}, </if>
+			<if test="aminvoice != null">`aminvoice` = #{aminvoice}, </if>
+			<if test="custompay != null">`custompay` = #{custompay}, </if>
+			<if test="orderNo != null">`order_no` = #{orderNo}, </if>
+			<if test="pid != null">`pid` = #{pid},</if>
+
+			<if test="deptId != null">`dept_id` = #{deptId},</if>
+			<if test="updatedName != null">`updated_name` = #{updatedName},</if>
+			<if test="invoice != null">`invoice` = #{invoice},</if>
+			<if test="kouling != null">`kouling` = #{kouling},</if>
+
+			<if test="taxdatepay != null">`taxdatepay` = #{taxdatepay}</if>
+
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from gc_siji where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from gc_siji where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+
+
+
+
+
+
+
+	<select id="getDunSum" resultType="java.util.HashMap">
+		select SUM(tonnage) as tonnage from gc_siji_item where id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</select>
+
+
+
+
+	<update id="updatePiliangPrice">
+		update gc_siji_item set baseprice=#{price},tranrate =coefficient*#{price},
+		                        trancost = tonnage*(coefficient*#{price})
+		where id = #{pid}
+	</update>
+
+
+	<update id="updatePiliangShuilv">
+		UPDATE gc_siji_item a
+			INNER JOIN gc_siji b ON a.pid = b.pid
+		set a.shuilv = #{price},a.shuie=#{price}*IFNULL(a.aminvoice,IFNULL(a.trancost,0))
+		where b.order_no = #{orderNo}
+
+
+	</update>
+
+
+
+
+
+
+
+
+
+	<select id="getOrder" resultType="com.bootdo.gc.domain.SijiDO">
+		select `id`,`bizdate`,`forwunit`,`carnum`,`steelnum`,`specs`,`packnum`,
+			   `tonnage`,`baseprice`,`coefficient`,`tranrate`,`trancost`,
+			   `arrivstation`,`payer`,`inforfee`,`remark`,`issueoffice`,
+			   `aminvoice`,`custompay`,`taxdatepay` ,order_no,pid,dept_id,updated_name
+		       ,invoice,kouling
+		from gc_siji
+		where order_no = #{orderNo}
+
+	</select>
+
+
+	<select id="getPid" resultType="com.bootdo.gc.domain.SijiDO">
+		select `id`,`bizdate`,`forwunit`,`carnum`,`steelnum`,`specs`,`packnum`,
+			   `tonnage`,`baseprice`,`coefficient`,`tranrate`,`trancost`,
+			   `arrivstation`,`payer`,`inforfee`,`remark`,`issueoffice`,
+			   `aminvoice`,`custompay`,`taxdatepay` ,order_no,pid,dept_id,updated_name
+		       ,invoice,kouling
+		from gc_siji
+		where pid = #{pid}
+
+	</select>
+
+
+
+
+
+	<select id="getExcelList" resultType="com.bootdo.gc.domain.SijiDO">
+		select
+		i.`id`,f.`bizdate`,f.`forwunit`,f.`carnum`,
+		f.`arrivstation`,i.`remark`,f.`inforfee`,
+		f.`payer`,f.order_no,f.pid,f.custompay as scustompay,
+
+		i.`steelnum`,i.`specs`,i.`packnum`,i.`zhinum`,
+		i.`tonnage`,i.`baseprice`,i.`coefficient`,i.`tranrate`,i.`trancost`,
+
+
+		i.billdate,i.`aminvoice`,i.`issueoffice`,i.`issueofficedate`,
+		i.`custompay`,i.`taxdatepay`,i.`paydate`,f.invoice,i.kouling,i.takeamount,
+		       i.aminvoicedate,i.inputdate,i.yue,i.shuilv,i.shuie
+		from gc_siji f
+		inner join gc_siji_item i on f.pid = i.pid
+
+		<where>
+
+
+			<if test="startDate != null and startDate != ''"> and f.bizdate &gt;= #{startDate} </if>
+			<if test="endDate != null and endDate != ''"> and f.bizdate &lt;= #{endDate} </if>
+
+			<if test="inforfee != null and inforfee != ''">
+				<![CDATA[ and f.inforfee like CONCAT('%',#{inforfee},'%') ]]>
+			</if>
+
+			<if test="carnum != null and carnum != ''">
+				<![CDATA[ and f.carnum like CONCAT('%',#{carnum},'%') ]]>
+			</if>
+
+			<if test="arrivstation != null and arrivstation != ''">
+				<![CDATA[ and f.arrivstation like CONCAT('%',#{arrivstation},'%') ]]>
+			</if>
+
+			<if test="deptId != null and deptId != ''">
+				and f.dept_id = #{deptId}
+			</if>
+		</where>
+
+		order by f.bizdate asc,f.order_no asc,i.id asc
+
+	</select>
+
+
+
+
+	<!-- 利润统计 -->
+	<select  id="queryLirun"  resultType="com.bootdo.gc.domain.LirunDO">
+		<![CDATA[
+
+		select
+		       t.order_no as orderNo,t.bizdate,t.carnum,t.inforfee,t.arrivstation,t.forwunit ,t.js,
+		       IFNULL(k.transfee,0)-IFNULL(k.shoushufei,0) as transfee,shuie as ks,IFNULL(k.shoushufei,0) as shoushufei
+				,t.js-IFNULL(k.transfee,0)- shuie as yue,k.tonnage,k.transcost,t.pid,t.issueoffice
+		from (
+				  select
+					s.order_no,s.bizdate,s.carnum,s.arrivstation,s.forwunit,
+					IFNULL(s.inforfee,'') as  inforfee,s.pid,
+					sum(IFNULL(i.aminvoice,IFNULL(i.trancost,0))) as js,sum(IFNULL(i.shuie,0)) as shuie,sia.`issueoffice` as issueoffice
+				  from gc_siji s
+				  inner join gc_siji_item i on s.pid = i.pid
+				  left join (
+				      select sia.pid,sia.`issueoffice`
+				      from gc_siji_item_aminvoice sia
+				      where  sia.dept_id = #{deptId}
+				      group by sia.pid,sia.`issueoffice`
+				  ) sia on sia.pid = s.pid
+				  where  s.dept_id = #{deptId}
+				  ]]>
+
+					<if test="startDate != null and startDate != ''"> and s.bizdate &gt;= #{startDate} </if>
+					<if test="endDate != null and endDate != ''"> and s.bizdate &lt;= #{endDate} </if>
+					<if test="inforfee != null and inforfee != ''">
+						<![CDATA[ and s.inforfee like CONCAT('%',#{inforfee},'%') ]]>
+					</if>
+					<if test="carnum != null and carnum != ''">
+						<![CDATA[ and sia.`issueoffice` like CONCAT('%',#{carnum},'%') ]]>
+					</if>
+					<if test="arrivstation != null and arrivstation != ''">
+						 and s.arrivstation in
+						<foreach collection="arrivstation" item="arrivstation" index="index" open="(" close=")" separator=",">
+							#{arrivstation}
+						</foreach>
+					</if>
+
+
+
+
+				  <![CDATA[
+				  group by s.order_no,s.bizdate,s.carnum,IFNULL(s.inforfee,''),IFNULL(sia.`issueoffice`,''),s.pid,s.arrivstation,s.forwunit
+		) t
+		left join gc_kehu k on t.pid = k.kpid
+		order by bizdate
+
+		]]>
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<!--应收款统计 导出-->
+	<select  id="excelTotal" resultType="java.util.Map" >
+		<![CDATA[
+
+
+
+	select
+	t1.inforfee ,
+
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -11 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -11 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth11',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -10 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -10 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth10',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -9 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -9 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth9',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -8 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -8 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth8',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -7 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -7 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth7',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -6 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -6 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth6',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -5 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -5 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth5',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -4 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -4 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth4',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -3 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -3 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth3',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -2 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -2 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth2',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -1 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -1 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth1',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval 0 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval 0 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth0'
+
+	,IFNULL(max(t3.dayTakeamount),0)  as dayTakeamount  -- 开票
+	,IFNULL(max(t4.dayInvoamount),0)  as dayInvoamount -- 回款
+
+	,IFNULL(sum(IFNULL(t1.takeamount,0)-IFNULL(t2.invoamount,0)) + IFNULL(max(t3.dayTakeamount),0) - IFNULL(max(t4.dayInvoamount),0)  ,0) + IFNULL(t5.tiaozheng,0)  as totalAmount
+    ,IFNULL(t5.tiaozheng,0) as tiaozheng
+
+	-- 开票金额
+
+	from (
+
+
+
+	  	select
+		sum(takeamount) as takeamount, inforfee, bizdate
+		from (
+
+			SELECT max(case when k.inputdate<#{inputdate} then k.takeamount else 0 end) as takeamount,s.inforfee ,k.id,LEFT(s.bizdate,7) as bizdate
+			from gc_siji s
+			inner join gc_siji_item si on s.pid = si.pid
+			inner join gc_siji_item_aminvoice k on k.pid = si.pid
+			where 1=1 and  k.inputdate<=#{inputdate}
+			]]>
+		<if test="deptId != null and deptId != ''">
+			and s.dept_id = #{deptId}
+		</if>
+		<if test="inforfee != null and inforfee != ''">
+			<![CDATA[ and s.inforfee like CONCAT('%',#{inforfee},'%') ]]>
+		</if>
+		<![CDATA[
+			GROUP BY s.inforfee,k.id,LEFT(s.bizdate,7)
+
+		) t
+		group by inforfee, bizdate
+
+
+	) t1
+	left join (
+
+	-- 结算金额
+
+
+		select
+		sum(invoamount) as invoamount, inforfee,bizdate
+		from (
+			SELECT
+			max(invo.takeamount) as invoamount,s.inforfee,invo.inputdate ,invo.id,LEFT(s.bizdate,7) as bizdate
+			from gc_siji s
+			inner join gc_siji_item si on s.pid = si.pid
+			inner join gc_siji_item_aminvoice k on k.pid = si.pid
+			inner join gc_siji_item_invoice invo on k.id = invo.pid
+			where 1=1 and invo.inputdate<#{inputdate}
+			]]>
+		<if test="deptId != null and deptId != ''">
+			and s.dept_id = #{deptId}
+		</if>
+		<if test="inforfee != null and inforfee != ''">
+			<![CDATA[ and s.inforfee like CONCAT('%',#{inforfee},'%') ]]>
+		</if>
+		<![CDATA[
+
+			GROUP BY s.inforfee,invo.id,LEFT(s.bizdate,7)
+		) t
+		group by inforfee,bizdate
+
+
+	) t2 on t1.inforfee = t2.inforfee and t1.bizdate = t2.bizdate
+
+	left join (
+
+	  	select
+		sum(takeamount) as dayTakeamount, inforfee
+		from (
+
+			SELECT max(k.takeamount) as takeamount,s.inforfee ,k.id
+			from gc_siji s
+			inner join gc_siji_item si on s.pid = si.pid
+			inner join gc_siji_item_aminvoice k on k.pid = si.pid
+			where 1=1 and  k.inputdate=#{inputdate}
+			]]>
+		<if test="deptId != null and deptId != ''">
+			and s.dept_id = #{deptId}
+		</if>
+		<if test="inforfee != null and inforfee != ''">
+			<![CDATA[ and s.inforfee like CONCAT('%',#{inforfee},'%') ]]>
+		</if>
+		<![CDATA[
+			GROUP BY s.inforfee,k.id
+
+		) t
+		group by inforfee
+
+
+
+	) t3 on t1.inforfee = t3.inforfee
+
+	left join (
+
+		select
+		sum(invoamount) as dayInvoamount, inforfee
+		from (
+			SELECT
+			max(invo.takeamount) as invoamount,s.inforfee,invo.inputdate ,invo.id
+			from gc_siji s
+			inner join gc_siji_item si on s.pid = si.pid
+			inner join gc_siji_item_aminvoice k on k.pid = si.pid
+			inner join gc_siji_item_invoice invo on k.id = invo.pid
+			where 1=1 and invo.inputdate=#{inputdate}
+			]]>
+		<if test="deptId != null and deptId != ''">
+			and s.dept_id = #{deptId}
+		</if>
+		<if test="inforfee != null and inforfee != ''">
+			<![CDATA[ and s.inforfee like CONCAT('%',#{inforfee},'%') ]]>
+		</if>
+		<![CDATA[
+
+			GROUP BY s.inforfee,invo.id
+		) t
+		group by inforfee
+
+
+	) t4 on t1.inforfee = t4.inforfee
+
+
+
+	left join (
+
+		SELECT
+		sum(s.amount) as tiaozheng,s.payer as inforfee
+		from gc_jiesuan s
+		where 1=1
+		]]>
+		<if test="deptId != null and deptId != ''">
+			and s.dept_id = #{deptId}
+		</if>
+		<if test="inforfee != null and inforfee != ''">
+			<![CDATA[ and s.payer like CONCAT('%',#{inforfee},'%') ]]>
+		</if>
+		<![CDATA[
+		GROUP BY s.payer
+
+
+	) t5 on t1.inforfee = t5.inforfee
+
+    group by t1.inforfee
+
+	order by  inforfee desc
+
+
+    ]]>
+
+
+
+
+	</select>
+
+
+
+
+
+	 <!--应收款统计 -->
+	<select  id="queryTotal" resultType="java.util.HashMap" >
+	<![CDATA[
+
+
+
+	select
+	t1.inforfee ,
+
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -11 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -11 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth11',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -10 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -10 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth10',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -9 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -9 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth9',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -8 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -8 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth8',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -7 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -7 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth7',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -6 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -6 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth6',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -5 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -5 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth5',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -4 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -4 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth4',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -3 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -3 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth3',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -2 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -2 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth2',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval -1 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval -1 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth1',
+	IFNULL(
+	 sum(case when t1.bizdate= date_format(date_add(now(), interval 0 month), '%Y-%m')  then takeamount else 0 end)
+	-sum(case when t2.bizdate= date_format(date_add(now(), interval 0 month), '%Y-%m')  then invoamount else 0 end)
+	,0) as 'bizMonth0'
+
+	,IFNULL(max(t3.dayTakeamount),0)  as dayTakeamount  -- 开票
+	,IFNULL(max(t4.dayInvoamount),0)  as dayInvoamount -- 回款
+
+	,IFNULL(sum(IFNULL(t1.takeamount,0)-IFNULL(t2.invoamount,0)) + IFNULL(max(t3.dayTakeamount),0) - IFNULL(max(t4.dayInvoamount),0)  ,0) + IFNULL(t5.tiaozheng,0)  as totalAmount
+    ,IFNULL(t5.tiaozheng,0) as tiaozheng
+
+	-- 开票金额
+
+	from (
+
+
+
+	  	select
+		sum(takeamount) as takeamount, inforfee, bizdate
+		from (
+
+			SELECT max(case when k.inputdate<#{inputdate} then k.takeamount else 0 end) as takeamount,s.inforfee ,k.id,LEFT(s.bizdate,7) as bizdate
+			from gc_siji s
+			inner join gc_siji_item si on s.pid = si.pid
+			inner join gc_siji_item_aminvoice k on k.pid = si.pid
+			where 1=1 and  k.inputdate<=#{inputdate}
+			]]>
+			<if test="deptId != null and deptId != ''">
+				and s.dept_id = #{deptId}
+			</if>
+			<if test="inforfee != null and inforfee != ''">
+				<![CDATA[ and s.inforfee like CONCAT('%',#{inforfee},'%') ]]>
+			</if>
+			<![CDATA[
+			GROUP BY s.inforfee,k.id,LEFT(s.bizdate,7)
+
+		) t
+		group by inforfee, bizdate
+
+
+	) t1
+	left join (
+
+	-- 结算金额
+
+
+		select
+		sum(invoamount) as invoamount, inforfee,bizdate
+		from (
+			SELECT
+			max(invo.takeamount) as invoamount,s.inforfee,invo.inputdate ,invo.id,LEFT(s.bizdate,7) as bizdate
+			from gc_siji s
+			inner join gc_siji_item si on s.pid = si.pid
+			inner join gc_siji_item_aminvoice k on k.pid = si.pid
+			inner join gc_siji_item_invoice invo on k.id = invo.pid
+			where 1=1 and invo.inputdate<#{inputdate}
+			]]>
+			<if test="deptId != null and deptId != ''">
+				and s.dept_id = #{deptId}
+			</if>
+			<if test="inforfee != null and inforfee != ''">
+				<![CDATA[ and s.inforfee like CONCAT('%',#{inforfee},'%') ]]>
+			</if>
+			<![CDATA[
+
+			GROUP BY s.inforfee,invo.id,LEFT(s.bizdate,7)
+		) t
+		group by inforfee,bizdate
+
+
+	) t2 on t1.inforfee = t2.inforfee and t1.bizdate = t2.bizdate
+
+	left join (
+
+	  	select
+		sum(takeamount) as dayTakeamount, inforfee
+		from (
+
+			SELECT max(k.takeamount) as takeamount,s.inforfee ,k.id
+			from gc_siji s
+			inner join gc_siji_item si on s.pid = si.pid
+			inner join gc_siji_item_aminvoice k on k.pid = si.pid
+			where 1=1 and  k.inputdate=#{inputdate}
+			]]>
+			<if test="deptId != null and deptId != ''">
+				and s.dept_id = #{deptId}
+			</if>
+			<if test="inforfee != null and inforfee != ''">
+				<![CDATA[ and s.inforfee like CONCAT('%',#{inforfee},'%') ]]>
+			</if>
+			<![CDATA[
+			GROUP BY s.inforfee,k.id
+
+		) t
+		group by inforfee
+
+
+
+	) t3 on t1.inforfee = t3.inforfee
+
+	left join (
+
+		select
+		sum(invoamount) as dayInvoamount, inforfee
+		from (
+			SELECT
+			max(invo.takeamount) as invoamount,s.inforfee,invo.inputdate ,invo.id
+			from gc_siji s
+			inner join gc_siji_item si on s.pid = si.pid
+			inner join gc_siji_item_aminvoice k on k.pid = si.pid
+			inner join gc_siji_item_invoice invo on k.id = invo.pid
+			where 1=1 and invo.inputdate=#{inputdate}
+			]]>
+				<if test="deptId != null and deptId != ''">
+					and s.dept_id = #{deptId}
+				</if>
+				<if test="inforfee != null and inforfee != ''">
+					<![CDATA[ and s.inforfee like CONCAT('%',#{inforfee},'%') ]]>
+				</if>
+				<![CDATA[
+
+			GROUP BY s.inforfee,invo.id
+		) t
+		group by inforfee
+
+
+	) t4 on t1.inforfee = t4.inforfee
+
+
+
+	left join (
+
+		SELECT
+		sum(s.amount) as tiaozheng,s.payer as inforfee
+		from gc_jiesuan s
+		where 1=1
+		]]>
+		<if test="deptId != null and deptId != ''">
+			and s.dept_id = #{deptId}
+		</if>
+		<if test="inforfee != null and inforfee != ''">
+			<![CDATA[ and s.payer like CONCAT('%',#{inforfee},'%') ]]>
+		</if>
+		<![CDATA[
+		GROUP BY s.payer
+
+
+	) t5 on t1.inforfee = t5.inforfee
+
+    group by t1.inforfee
+
+	order by  inforfee desc
+
+
+    ]]>
+
+
+
+
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 车站 -->
+    <select  id="arrivstation"  resultType="java.util.HashMap">
+        <![CDATA[
+
+
+				  select
+					s.arrivstation
+				  from gc_siji s
+				  inner join gc_siji_item i on s.pid = i.pid
+				  where  s.dept_id = #{deptId}
+		]]>
+
+        <if test="startDate != null and startDate != ''"> and s.bizdate &gt;= #{startDate} </if>
+        <if test="endDate != null and endDate != ''"> and s.bizdate &lt;= #{endDate} </if>
+        <if test="inforfee != null and inforfee != ''">
+            <![CDATA[ and s.inforfee like CONCAT('%',#{inforfee},'%') ]]>
+        </if>
+        <if test="carnum != null and carnum != ''">
+            <![CDATA[ and s.carnum like CONCAT('%',#{carnum},'%') ]]>
+        </if>
+
+        <![CDATA[
+				  group by s.arrivstation
+
+                  order by arrivstation
+		]]>
+    </select>
+
+
+
+</mapper>
